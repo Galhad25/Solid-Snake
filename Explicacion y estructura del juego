@@ -1,87 +1,178 @@
-Documento de Instrucciones y Arquitectura del Juego "Snake"
-1. Instrucciones del Juego
-Objetivo del Juego:
-El objetivo del juego Snake es controlar una serpiente que se mueve por la pantalla y recolecta comida para crecer. La comida aparece aleatoriamente en el área del juego, y cada vez que la serpiente la toca, se agranda y aumenta el puntaje. El juego termina cuando la serpiente choca con los límites de la pantalla o con su propio cuerpo. El jugador debe evitar estos obstáculos y lograr alcanzar un puntaje objetivo para ganar.
+### Documento de Instrucciones y Arquitectura del Juego "Snake"
 
-Controles:
-Flecha arriba: Mueve la serpiente hacia arriba.
-Flecha abajo: Mueve la serpiente hacia abajo.
-Flecha derecha: Mueve la serpiente hacia la derecha.
-Flecha izquierda: Mueve la serpiente hacia la izquierda.
-Esc: Sale del juego en cualquier momento.
-Reglas:
-El juego comienza con una serpiente de tamaño 4.
-La serpiente debe recolectar comida (representada por un * en la pantalla) para crecer.
-La serpiente no debe chocar con los límites del área de juego ni con su propio cuerpo.
-El puntaje aumenta en 10 puntos cada vez que la serpiente come la comida.
-La velocidad del juego aumenta cada vez que el puntaje alcanza un múltiplo de 20.
-El juego termina si el puntaje alcanza 50 puntos o si la serpiente colisiona con algún obstáculo.
-Puntaje:
-Puntaje Inicial: 0 puntos.
-Incremento de Puntaje: Cada vez que la serpiente come la comida, el puntaje aumenta en 10.
-Objetivo: Alcanzar 50 puntos para ganar el juego.
-2. Arquitectura del Juego
-2.1 Descripción General
-El juego se estructura utilizando funciones en C++ que interactúan entre sí para crear una experiencia de juego completa. A continuación, se describen los elementos principales del juego, sus atributos, métodos y cómo interactúan entre sí.
+---
 
-2.2 Elementos del Juego
-2.2.1 Serpiente (Snake)
+## **1. Instrucciones del Juego**
 
-Atributos:
-cuerpo[200][2]: Un arreglo que almacena las posiciones (x, y) de cada segmento del cuerpo de la serpiente.
+### **Objetivo del Juego**
+El objetivo del juego *Snake* es controlar una serpiente que se mueve por la pantalla y recolecta comida para crecer. La comida aparece aleatoriamente en el área del juego, y cada vez que la serpiente la toca, se agranda y aumenta el puntaje. El juego termina cuando la serpiente choca con los límites de la pantalla o con su propio cuerpo. El jugador debe evitar estos obstáculos y lograr alcanzar un puntaje objetivo para ganar.
 
-n: El índice del siguiente segmento de la serpiente.
+---
 
-tam: El tamaño inicial de la serpiente, que ahora comienza en 4.
-x, y: Las coordenadas de la cabeza de la serpiente.
+### **Controles**
+- **Flecha arriba:** Mueve la serpiente hacia arriba.  
+- **Flecha abajo:** Mueve la serpiente hacia abajo.  
+- **Flecha derecha:** Mueve la serpiente hacia la derecha.  
+- **Flecha izquierda:** Mueve la serpiente hacia la izquierda.  
+- **Esc:** Sale del juego en cualquier momento.  
 
-dir: La dirección en la que se mueve la serpiente (1 = Arriba, 2 = Abajo, 3 = Derecha, 4 = Izquierda).
+---
 
+### **Reglas**
+1. El juego comienza con una serpiente de tamaño **4**.  
+2. La serpiente debe recolectar comida (representada por un * en la pantalla) para crecer.  
+3. La serpiente no debe chocar con los límites del área de juego ni con su propio cuerpo.  
+4. El puntaje aumenta en **10 puntos** cada vez que la serpiente come la comida.  
+5. La velocidad del juego aumenta cada vez que el puntaje alcanza un múltiplo de **20**.  
+6. El juego termina si el puntaje alcanza **50 puntos** o si la serpiente colisiona con algún obstáculo.  
 
-Métodos:
-guardar_posicion(): Guarda la posición de la cabeza de la serpiente en el arreglo cuerpo. Después, mueve el índice n para actualizar las posiciones de los segmentos.
-dibujar_cuerpo(): Dibuja los segmentos del cuerpo de la serpiente usando el carácter #.
-borrar_cuerpo(): Borra el segmento de la serpiente que ya ha sido procesado.
-teclear(): Captura las teclas de dirección presionadas por el usuario para cambiar la dirección de la serpiente.
-2.2.2 Comida (Food)
-Atributos:
-xc, yc: Las coordenadas de la comida en el área de juego.
-Métodos:
-comida(): Verifica si las coordenadas de la cabeza de la serpiente coinciden con las coordenadas de la comida (xc, yc). Si es así, genera nuevas coordenadas para la comida en una ubicación aleatoria dentro del área de juego y aumenta el tamaño de la serpiente.
-2.2.3 Área de Juego (Game Area)
-Atributos:
-El área de juego tiene límites establecidos por las coordenadas (de 2 a 77 en el eje X y de 3 a 23 en el eje Y).
-Métodos:
-pintar(): Dibuja los bordes del área del juego utilizando caracteres ASCII. Este método dibuja las líneas horizontales, verticales y las esquinas.
-2.2.4 Puntaje (Score)
-Atributos:
-score: Almacena el puntaje del jugador.
-Métodos:
-puntos(): Muestra el puntaje actual del jugador en la consola.
-2.3 Interacción entre los Elementos
-2.3.1 Movimiento de la Serpiente
-El movimiento de la serpiente se controla a través de la función teclear(), que captura las teclas presionadas por el usuario. Dependiendo de la tecla, la serpiente cambiará su dirección. La dirección está representada por el valor de dir, y las coordenadas de la cabeza de la serpiente (x, y) se actualizan en cada ciclo del juego.
-2.3.2 Colisiones
-El método game_over() verifica si la serpiente ha chocado con los límites del área o consigo misma. Si ocurre una colisión, el juego termina.
-La colisión con los límites se verifica en la parte superior, inferior, izquierda y derecha del área de juego.
-La colisión con el propio cuerpo de la serpiente se verifica comparando las posiciones de la cabeza de la serpiente con las posiciones de cada uno de los segmentos del cuerpo.
-2.3.3 Recolección de Comida
-Cada vez que la cabeza de la serpiente toca la comida (verificado en la función comida()), el puntaje se incrementa en 10 puntos, la serpiente crece en tamaño, y la comida se reposiciona aleatoriamente en el área de juego.
-2.3.4 Incremento de Velocidad
-A medida que el jugador obtiene más puntos (cada 20 puntos alcanzados), la velocidad del juego aumenta. Esto se maneja en la función cambiar_velocidad(), donde se reduce el valor de la variable velocidad para hacer que el juego sea más rápido.
-2.4 Funciones del Juego
-2.4.1 gotoxy(int x, int y)
-Esta función mueve el cursor a las coordenadas (x, y) en la consola. Es utilizada para dibujar y borrar los elementos del juego en la posición correcta.
-2.4.2 titulo()
-Muestra las instrucciones y el título del juego antes de que comience el juego, proporcionando una experiencia más amigable al usuario.
-2.4.3 game()
-Esta es la función principal que gestiona la lógica del juego. Contiene el ciclo principal donde:
-Se actualizan las posiciones de la serpiente.
-Se verifica la recolección de comida.
-Se verifican las colisiones.
-Se actualiza la pantalla con el puntaje y la serpiente.
-2.5 Flujo del Juego
-El juego comienza con el método titulo(), donde se presentan las instrucciones.
-El área de juego es inicializada con el método pintar(), y la comida es colocada en una posición aleatoria.
-En cada iteración del ciclo del juego, la posición de la serpiente se actualiza, se verifica si ha comido la comida o si ha colisionado con algún obstáculo.
-El juego termina cuando la serpiente choca con un límite o con su propio cuerpo, o cuando el puntaje alcanza 50 puntos.
+---
+
+### **Puntaje**
+- **Puntaje Inicial:** 0 puntos.  
+- **Incremento de Puntaje:** +10 puntos por comida recolectada.  
+- **Objetivo:** Alcanzar **50 puntos** para ganar el juego.  
+
+---
+
+## **2. Arquitectura del Juego**
+
+---
+
+### **2.1 Descripción General**
+El juego se estructura utilizando funciones en **C++** que interactúan entre sí para crear una experiencia de juego completa. A continuación, se describen los elementos principales del juego, sus atributos, métodos y cómo interactúan entre ellos.
+
+---
+
+### **2.2 Elementos del Juego**
+
+#### **2.2.1 Serpiente (Snake)**
+
+**Atributos:**
+- `cuerpo[200][2]`: Arreglo que almacena las posiciones (x, y) de cada segmento del cuerpo de la serpiente.  
+- `n`: Índice del siguiente segmento de la serpiente.  
+- `tam`: Tamaño inicial de la serpiente (comienza en 4).  
+- `x, y`: Coordenadas de la cabeza de la serpiente.  
+- `dir`: Dirección de movimiento de la serpiente (1 = Arriba, 2 = Abajo, 3 = Derecha, 4 = Izquierda).  
+
+**Métodos:**
+1. **`guardar_posicion()`**:  
+   Guarda la posición de la cabeza de la serpiente en el arreglo `cuerpo` y actualiza las posiciones de los segmentos.  
+2. **`dibujar_cuerpo()`**:  
+   Dibuja los segmentos del cuerpo de la serpiente usando el carácter `#`.  
+3. **`borrar_cuerpo()`**:  
+   Borra el segmento de la serpiente que ya ha sido procesado.  
+4. **`teclear()`**:  
+   Captura las teclas de dirección presionadas por el usuario para cambiar la dirección de la serpiente.  
+
+---
+
+#### **2.2.2 Comida (Food)**
+
+**Atributos:**
+- `xc, yc`: Coordenadas de la comida en el área de juego.  
+
+**Métodos:**
+1. **`comida()`**:  
+   Verifica si las coordenadas de la cabeza de la serpiente coinciden con las de la comida (`xc, yc`). Si es así:  
+   - Genera nuevas coordenadas para la comida en una ubicación aleatoria.  
+   - Aumenta el tamaño de la serpiente.  
+
+---
+
+#### **2.2.3 Área de Juego (Game Area)**
+
+**Atributos:**
+- Los límites del área de juego están establecidos por las coordenadas:  
+  - **X**: De 2 a 77.  
+  - **Y**: De 3 a 23.  
+
+**Métodos:**
+1. **`pintar()`**:  
+   Dibuja los bordes del área de juego usando caracteres ASCII para las líneas horizontales, verticales y las esquinas.  
+
+---
+
+#### **2.2.4 Puntaje (Score)**
+
+**Atributos:**
+- `score`: Almacena el puntaje del jugador.  
+
+**Métodos:**
+1. **`puntos()`**:  
+   Muestra el puntaje actual del jugador en la consola.  
+
+---
+
+### **2.3 Interacción entre los Elementos**
+
+#### **2.3.1 Movimiento de la Serpiente**
+El movimiento se controla con la función **`teclear()`**, que captura las teclas presionadas por el usuario. La dirección (`dir`) define cómo cambian las coordenadas de la cabeza (`x, y`) en cada ciclo del juego.
+
+---
+
+#### **2.3.2 Colisiones**
+1. **Colisión con límites:**  
+   Se verifica si la serpiente ha chocado con:  
+   - Parte superior, inferior, izquierda o derecha del área de juego.  
+2. **Colisión consigo misma:**  
+   Se compara la posición de la cabeza con las posiciones de los segmentos del cuerpo.  
+
+Si ocurre una colisión, el método **`game_over()`** termina el juego.
+
+---
+
+#### **2.3.3 Recolección de Comida**
+Cuando la cabeza de la serpiente toca la comida:  
+- El puntaje aumenta en **10 puntos**.  
+- La serpiente crece en tamaño.  
+- La comida se reposiciona aleatoriamente.  
+
+Esto se gestiona con la función **`comida()`**.
+
+---
+
+#### **2.3.4 Incremento de Velocidad**
+Cada vez que el puntaje alcanza un múltiplo de **20**, la velocidad del juego aumenta. Esto se controla reduciendo el valor de la variable **`velocidad`**, lo que acelera el ciclo del juego.
+
+---
+
+### **2.4 Funciones del Juego**
+
+#### **2.4.1 `gotoxy(int x, int y)`**
+Mueve el cursor a las coordenadas `(x, y)` en la consola. Se utiliza para dibujar y borrar elementos en sus posiciones correctas.
+
+---
+
+#### **2.4.2 `titulo()`**
+Muestra las instrucciones y el título del juego antes de comenzar, proporcionando una experiencia más amigable al usuario.
+
+---
+
+#### **2.4.3 `game()`**
+Función principal que gestiona la lógica del juego. Dentro de su ciclo principal:  
+1. Actualiza las posiciones de la serpiente.  
+2. Verifica la recolección de comida.  
+3. Verifica las colisiones.  
+4. Actualiza la pantalla con el puntaje y el estado del juego.  
+
+---
+
+### **2.5 Flujo del Juego**
+1. **Inicio:**  
+   - Se presenta el título y las instrucciones usando el método **`titulo()`**.  
+
+2. **Inicialización:**  
+   - Se dibuja el área de juego con **`pintar()`**.  
+   - La comida se posiciona aleatoriamente.  
+
+3. **Juego:**  
+   - En cada ciclo:  
+     - La serpiente se mueve.  
+     - Se verifica si la serpiente comió o colisionó.  
+     - Se actualiza el puntaje y la velocidad.  
+
+4. **Final:**  
+   - El juego termina si:  
+     - La serpiente choca con un límite o consigo misma.  
+     - El puntaje alcanza **50 puntos**.  
